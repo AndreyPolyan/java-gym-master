@@ -93,6 +93,7 @@ public class TimetableTest {
 
         Group group = new Group("Акробатика для детей", Age.CHILD, 60);
         Coach coach = new Coach("Васильев", "Николай", "Сергеевич");
+        Coach coachSecond = new Coach("Петров", "Николай", "Иванович");
         TrainingSession singleTrainingSession = new TrainingSession(
                 group,
                 coach,
@@ -101,6 +102,23 @@ public class TimetableTest {
         );
 
         timetable.addNewTrainingSession(singleTrainingSession);
+
+        TrainingSession pairedTrainingSessionOne = new TrainingSession(
+                group,
+                coach,
+                DayOfWeek.TUESDAY,
+                new TimeOfDay(13, 0)
+        );
+
+        TrainingSession pairedTrainingSessionTwo = new TrainingSession(
+                group,
+                coachSecond,
+                DayOfWeek.TUESDAY,
+                new TimeOfDay(13, 0)
+        );
+        timetable.addNewTrainingSession(pairedTrainingSessionOne);
+        timetable.addNewTrainingSession(pairedTrainingSessionTwo);
+
 
         List<TrainingSession> mondayAtThirteen = timetable.getTrainingSessionsForDayAndTime(
                 DayOfWeek.MONDAY,
@@ -111,7 +129,13 @@ public class TimetableTest {
                 new TimeOfDay(14, 0)
         );
 
+        List<TrainingSession> tuesdayPairedAtThirteen = timetable.getTrainingSessionsForDayAndTime(
+                DayOfWeek.TUESDAY,
+                new TimeOfDay(13, 0)
+        );
+
         Assertions.assertEquals(1, mondayAtThirteen.size(), "За понедельник в 13:00 должно вернуться одно занятие.");
+        Assertions.assertEquals(2, tuesdayPairedAtThirteen.size(), "За вторник в 13:00 должно вернуться два занятия.");
         Assertions.assertEquals(singleTrainingSession, mondayAtThirteen.get(0), "Вернулась неверная тренировка.");
         Assertions.assertTrue(mondayAtFourteen.isEmpty(), "За понедельник в 14:00 занятий быть не должно.");
     }
