@@ -95,6 +95,7 @@ public class Timetable {
 
         return left;
     }
+    
     private boolean hasCoachConflict(DayOfWeek dayOfWeek, TimeOfDay timeOfDay, Coach coach) {
         List<TrainingSession> sessionsInTimeSlot =
                 sessionsByDayAndTime.get(dayOfWeek).getOrDefault(timeOfDay, Collections.emptyList());
